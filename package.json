@@ -33,7 +33,7 @@
   "license": "MIT",
   "private": false,
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.18",
