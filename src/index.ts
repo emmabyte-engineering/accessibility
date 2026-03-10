@@ -1,12 +1,28 @@
 import { AccessibilityWidget } from './widget';
-import type { AccessibilityWidgetOptions } from './widget';
+import {
+  type AccessibilityPreferences,
+  type AccessibilityWidgetOptions,
+  type AccessibilityChangeEvent,
+  type AccessibilityChangeEventDetail,
+  type WidgetPosition,
+  STORAGE_KEYS,
+  CSS_CLASSES,
+  DEFAULT_PREFERENCES,
+} from './types';
 
 export { AccessibilityWidget };
-export type { AccessibilityWidgetOptions };
+export type {
+  AccessibilityPreferences,
+  AccessibilityWidgetOptions,
+  AccessibilityChangeEvent,
+  AccessibilityChangeEventDetail,
+  WidgetPosition,
+};
+export { STORAGE_KEYS, CSS_CLASSES, DEFAULT_PREFERENCES };
 
 /**
- * Register the <accessibility-widget> custom element.
- * Safe to call multiple times — will only register once.
+ * Register the `<accessibility-widget>` custom element.
+ * Safe to call multiple times — only registers once per tag name.
  */
 export function register(tagName = 'accessibility-widget'): void {
   if (typeof customElements === 'undefined') return;
@@ -16,14 +32,20 @@ export function register(tagName = 'accessibility-widget'): void {
 }
 
 /**
- * Create and mount the accessibility widget.
+ * Create, configure, and mount the accessibility widget to the DOM.
  *
  * @example
  * ```ts
  * import { mount } from '@emmabyteeng/accessibility';
- * mount(); // defaults: bottom-right, #b93a54 accent
+ *
+ * // Defaults: bottom-right, Pulse accent color
+ * mount();
+ *
+ * // Custom position and color
  * mount({ position: 'bottom-left', accentColor: '#2563eb' });
  * ```
+ *
+ * @returns The mounted `AccessibilityWidget` element.
  */
 export function mount(options: AccessibilityWidgetOptions = {}): AccessibilityWidget {
   register();
@@ -54,25 +76,25 @@ export function mount(options: AccessibilityWidgetOptions = {}): AccessibilityWi
 }
 
 /**
- * Get current accessibility preferences from localStorage.
+ * Read the current accessibility preferences from localStorage
+ * without mounting the widget.
+ *
+ * Useful for server-side or build-time rendering where you need
+ * to read preferences but don't want the widget in the DOM.
+ *
+ * @param prefix - localStorage key prefix (default: `'a11y'`)
  */
-export function getPreferences(prefix = 'a11y'): {
-  fontSize: number;
-  highContrast: boolean;
-  reducedMotion: boolean;
-  dyslexiaFont: boolean;
-  largeSpacing: boolean;
-} {
+export function getPreferences(prefix = 'a11y'): AccessibilityPreferences {
   const load = (key: string, fallback: string): string =>
     typeof localStorage !== 'undefined'
       ? localStorage.getItem(`${prefix}-${key}`) ?? fallback
       : fallback;
 
   return {
-    fontSize: parseInt(load('font-size', '100')),
-    highContrast: load('high-contrast', 'false') === 'true',
-    reducedMotion: load('reduced-motion', 'false') === 'true',
-    dyslexiaFont: load('dyslexia-font', 'false') === 'true',
-    largeSpacing: load('large-spacing', 'false') === 'true',
+    fontSize: parseInt(load(STORAGE_KEYS.fontSize, '100')),
+    highContrast: load(STORAGE_KEYS.highContrast, 'false') === 'true',
+    reducedMotion: load(STORAGE_KEYS.reducedMotion, 'false') === 'true',
+    dyslexiaFont: load(STORAGE_KEYS.dyslexiaFont, 'false') === 'true',
+    largeSpacing: load(STORAGE_KEYS.largeSpacing, 'false') === 'true',
   };
 }
