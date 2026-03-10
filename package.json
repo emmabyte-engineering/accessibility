@@ -1,0 +1,46 @@
+{
+  "name": "@emmabyteeng/accessibility",
+  "version": "0.1.0",
+  "description": "Drop-in accessibility preferences widget for any web application",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmabyte-engineering/accessibility.git"
+  },
+  "author": "Emmabyte Engineering, Inc.",
+  "license": "MIT",
+  "private": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "widget",
+    "web-component"
+  ]
+}
